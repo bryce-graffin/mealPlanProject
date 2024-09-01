@@ -1,6 +1,15 @@
 """
-This method is where the project will be run from.
+Module Name:
+    main.py
+
+Author:
+    Bryce Graffin
+
+Date:
+    September 1, 2024
 """
+
+
 # import io
 # import requests
 from selenium import webdriver
