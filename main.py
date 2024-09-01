@@ -58,6 +58,7 @@ def get_meal_plan(calories, meals):
 
     meal_list = []  # all meals
 
+    # TODO: make this work for an entire month, add checks for repeat recipes
     # get each meal for the day
     for meal in range(len(meals)):
         meal_type = driver.find_element(By.XPATH,'.//div[@class="col-auto text-dark-gray text-large text-strong '
@@ -73,7 +74,7 @@ def get_meal_plan(calories, meals):
         for food in foods:
             food_name = food.find_element(By.XPATH,'.//div[@class="print_name"]')
 
-            #TODO: fix this part for images
+            # TODO: fix this part for images
             # food_image = food.find_element(By.XPATH,'.//div[@class="food_image"]')
             # food_image_url = food_image.get_attribute('style')
             # food_image_url = food_image_url[food_image_url.index('url(') + 4:]
@@ -90,7 +91,7 @@ def get_meal_plan(calories, meals):
             #     img.show()
             # except Exception as e:
             #     print(f'Error fetching/displaying image: {e}')
-            #TODO: add something here to look for ingredients
+            # TODO: add something here to look for ingredients
 
         # add the meal to the list
         meal_list.append(meals[meal].text)
