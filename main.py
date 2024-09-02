@@ -12,6 +12,8 @@ Date:
 
 # import io
 # import requests
+import tkinter as tk
+from tkinter import ttk, messagebox
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.chrome.service import Service
@@ -19,6 +21,64 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 # from PIL import Image
 import time
+
+
+def create_ui():
+    # create the main ui window
+    root = tk.Tk()
+    root.title("Meal Plan Generator")
+    root.geometry("400x300")  # window size
+
+    # create labels and entry fields
+    tk.Label(root, text="Enter how many days you would like to plan for (1-31):\n*more days will result in longer wait "
+                        "times").pack(pady=5)
+    days_entry = tk.Entry(root)
+    days_entry.pack(pady=5)
+
+    tk.Label(root, text="Enter desired daily calories (0-20k): ").pack(pady=5)
+    cals_entry = tk.Entry(root)
+    cals_entry.pack(pady=5)
+
+    tk.Label(root, text="Enter meal count per day (1-9): ").pack(pady=5)
+    meals_entry = tk.Entry(root)
+    meals_entry.pack(pady=5)
+
+    # handle the submission of user input
+    def generate_plan():
+        try:
+            days = int(days_entry.get())
+            cals = int(cals_entry.get())
+            num_of_meals = int(meals_entry.get())
+
+            # input validation
+            if not (0 < days <= 31):
+                raise ValueError("Days should be between 1 and 31")
+            if not (0 < cals <= 20000):
+                raise ValueError("Calories should be between 0 and 20,000.")
+            if not (0 < num_of_meals <= 9):
+                raise ValueError("Meal count should be between 1 and 9.")
+
+            meal_plan = ""
+            for i in range(days):
+                meal_plan += f'\nDay {i + 1}:\n{get_meal_plan(cals, num_of_meals)}\n'
+
+                # display the meal plan in a new window
+                output_window = tk.Toplevel(root)
+                output_window.title("Generated Meal Plan")
+                output_text = tk.Text(output_window, wrap='word')
+                output_text.pack(expand=True, fill='both')
+                output_text.insert('1.0', meal_plan)
+
+        except ValueError as e:
+            messagebox.showerror("Input Error", str(e))
+
+    # submit button
+    generate_button = tk.Button(root, text="Generate Meal Plan", command=generate_plan)
+    generate_button.pack(pady=20)
+
+    # start the main loop
+    if __name__ == '__main__':
+        root.mainloop()
 
 
 def get_meal_plan(calories, num_meals):
@@ -100,32 +160,35 @@ def get_meal_plan(calories, num_meals):
 
 
 if __name__ == '__main__':
-    # user inputs
-    while True:
-        try:
-            days = int(input('Enter how many days you would like to plan for: '))
-            break  # exit the loop if the user enters a valid integer value
-        except ValueError:
-            print("Please enter a valid integer.")
 
-    while True:
-        try:
-            cals = int(input('Enter desired daily calories (0-20k): '))
-            break  # exit the loop if the user enters a valid integer value
-        except ValueError:
-            print("Please enter a valid integer.")
+    create_ui()
 
-    while True:
-        try:
-            num_of_meals = int(input('Enter meal count per day (1-9): '))
-            break  # exit the loop if the user enters a valid integer value
-        except ValueError:
-            print("Please enter a valid integer.")
-
-    i = 0  # current day iteration
-
-    # get plan for a month
-    while i < days:
-        meal_plan = get_meal_plan(cals, num_of_meals)
-        print(f'\nDay {i + 1}:\n{meal_plan}')
-        i += 1
+    # # user inputs
+    # while True:
+    #     try:
+    #         days = int(input('Enter how many days you would like to plan for: '))
+    #         break  # exit the loop if the user enters a valid integer value
+    #     except ValueError:
+    #         print("Please enter a valid integer.")
+    #
+    # while True:
+    #     try:
+    #         cals = int(input('Enter desired daily calories (0-20k): '))
+    #         break  # exit the loop if the user enters a valid integer value
+    #     except ValueError:
+    #         print("Please enter a valid integer.")
+    #
+    # while True:
+    #     try:
+    #         num_of_meals = int(input('Enter meal count per day (1-9): '))
+    #         break  # exit the loop if the user enters a valid integer value
+    #     except ValueError:
+    #         print("Please enter a valid integer.")
+    #
+    # i = 0  # current day iteration
+    #
+    # # get plan for a month
+    # while i < days:
+    #     meal_plan = get_meal_plan(cals, num_of_meals)
+    #     print(f'\nDay {i + 1}:\n{meal_plan}')
+    #     i += 1
