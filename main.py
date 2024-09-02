@@ -13,7 +13,7 @@ Date:
 # import io
 # import requests
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import messagebox
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.chrome.service import Service
